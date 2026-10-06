@@ -11,7 +11,9 @@ typedef struct Nodo {
 // PROTOTIPOS
 Nodo* crearNodo(int dato);
 void append(Nodo** head, Nodo** tail, int dato);
+void preappend(Nodo** head, Nodo** tail, int dato);
 void recorrido(Nodo** head);
+void recorridoInverso(Nodo** tail);
 
 int main() {
     Nodo* head = NULL;
@@ -22,6 +24,8 @@ int main() {
     append(&head, &tail, 30);
     append(&head, &tail, 50);
     append(&head, &tail, 20);
+
+    recorrido(&head);
 
     return 0;
 }
@@ -48,7 +52,7 @@ void append(Nodo** head, Nodo** tail, int dato) {
     Nodo* nuevo = crearNodo(dato);
 
     // Verificamos si la lista esta vacia
-    if (head == NULL && tail == NULL) {
+    if (*head == NULL && *tail == NULL) {
         *head = nuevo;
         *tail = nuevo;
         return; 
@@ -58,6 +62,23 @@ void append(Nodo** head, Nodo** tail, int dato) {
     (*tail)->sig = nuevo;
     nuevo->ant = *tail;
     *tail = nuevo;
+}
+
+void preappend(Nodo** head, Nodo** tail, int dato) {
+    // Creamos un nuevo nodo
+    Nodo* nuevo = crearNodo(dato);
+
+    // Verificamos si la lista esta vacia
+    if (*head == NULL && *tail == NULL) {
+        *head = nuevo;
+        *tail = nuevo;
+        return; 
+    }
+
+    // Si no es el primer elemento insertamos al final
+    (*head)->ant = nuevo;
+    nuevo->sig = *head;
+    *head = nuevo;
 }
 
 void recorrido(Nodo** head) {
@@ -70,4 +91,8 @@ void recorrido(Nodo** head) {
     }
     
     printf("NULL\n");
+}
+
+void recorridoInverso(Nodo** tail) {
+
 }
