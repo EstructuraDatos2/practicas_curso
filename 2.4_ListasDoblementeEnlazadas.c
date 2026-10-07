@@ -14,6 +14,7 @@ void append(Nodo** head, Nodo** tail, int dato);
 void preappend(Nodo** head, Nodo** tail, int dato);
 void recorrido(Nodo** head);
 void recorridoInverso(Nodo** tail);
+void recorridoIdaVuelta(Nodo** head, Nodo** tail);
 
 int main() {
     Nodo* head = NULL;
@@ -24,8 +25,11 @@ int main() {
     append(&head, &tail, 30);
     append(&head, &tail, 50);
     append(&head, &tail, 20);
+    preappend(&head, &tail, 90);
 
     recorrido(&head);
+    recorridoInverso(&tail);
+    recorridoIdaVuelta(&head, &tail);
 
     return 0;
 }
@@ -94,5 +98,38 @@ void recorrido(Nodo** head) {
 }
 
 void recorridoInverso(Nodo** tail) {
+    printf("Recorrido hacia atrás:\n");
+    Nodo* aux = *tail;
 
+    while(aux != NULL) {
+        printf("%d -> ", aux->dato);
+        aux = aux->ant;
+    }
+    
+    printf("NULL\n");
+}
+
+void recorridoIdaVuelta(Nodo** head, Nodo** tail) {
+    printf("Recorrido de ida y vuelta.\n");
+    Nodo* aux = *head;
+    int llegoAlFinal = 0;
+
+    // Recorrido hacia delante
+    while(aux != NULL) {
+        printf("%d -> ", aux->dato);
+        if (!llegoAlFinal) {
+          aux = aux->sig; 
+        } else {
+          aux = aux->ant;
+        }
+        // aux = !llegoAlFinal ? aux->sig : aux->ant;
+        
+        if (aux->sig == NULL) {
+            // Me doy la vuelta
+            llegoAlFinal = 1;
+        }
+    }
+
+    printf("NULL\n");
+    // 90->10->40->30->50->20->50->30->40->10->90->NULL
 }
