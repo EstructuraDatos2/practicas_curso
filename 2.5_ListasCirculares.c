@@ -18,16 +18,24 @@ void append(Lista* circular, int dato);
 Nodo* crearNodo(int dato);
 void recorrido(Lista circular);
 void recorridoInverso(Lista circular);
+void recorridoCiclos(Lista circular, int numCiclos);
+void eliminarNodos(Lista* circular, int nodoEliminar);
 
 int main() {
     Lista doblementeCircular = {0, NULL, NULL};
     
     append(&doblementeCircular, 10);
     append(&doblementeCircular, 20); 
+    append(&doblementeCircular, 25); 
     append(&doblementeCircular, 30);
     append(&doblementeCircular, 40);
     append(&doblementeCircular, 50);
 
+    recorrido(doblementeCircular);
+    recorridoInverso(doblementeCircular);
+    // recorridoCiclos(doblementeCircular, 3);
+    printf("\n\nELIMINAR NODO 30\n\n");
+    eliminarNodos(&doblementeCircular, 30);
     recorrido(doblementeCircular);
     recorridoInverso(doblementeCircular);
 
@@ -50,8 +58,8 @@ void append(Lista* circular, int dato) {
         circular->head = nuevo;
         circular->tail = nuevo;
 
-        nuevo->sig = nuevo;
-        nuevo->ant = nuevo;
+        nuevo->sig = nuevo; // * CAMBIO
+        nuevo->ant = nuevo; // * CAMBIO
         // return;
     } else {
         // Si no está vacia?
@@ -61,7 +69,7 @@ void append(Lista* circular, int dato) {
         circular->tail->sig = nuevo;
         circular->head->ant = nuevo;
 
-        circular->tail = nuevo;
+        circular->tail = nuevo; // * CAMBIO
     }
     circular->longitud++;
 }
@@ -104,6 +112,44 @@ void recorridoInverso(Lista circular) {
 }
 
 void recorridoCiclos(Lista circular, int numCiclos) {
-    numCiclos = 3;
-    // 10,20,30,40,50,10,20,30,40,50,10,20,30,40,50
+    // * OBJETIVO: 10,20,30,40,50,10,20,30,40,50,10,20,30,40,50
+    // Cuando numCiclos es igual a 3
+    printf("Recorrido por ciclos\n");
+    Nodo* aux = circular.head;
+
+    int ciclos = 0;
+    do {
+        printf("%d -> ", aux->dato);
+        aux = aux->sig;
+
+        if (aux == circular.head) ciclos++;
+    } while (ciclos < numCiclos);
+    printf("NULL\n");
+}
+
+void eliminarNodos(Lista* circular, int nodoEliminar) {
+    Nodo* aux = circular->head;
+
+    // CASO 1 El nodo a eliminar es la cabeza o cola de la lista
+    if (circular->head->dato == nodoEliminar){
+        circular->head = aux->sig;
+    }
+
+    if (circular->tail->dato == nodoEliminar){
+        
+    }
+
+    // CASO 2 El nodo a eliminar esta enmedio
+    do {
+        aux = aux->sig;
+        if (aux == circular->head) return;
+    } while (aux->dato != nodoEliminar);
+
+    // PASO 1 Conectar el siguiente de 25 a 40
+    (aux->ant)->sig = aux->sig;
+    // PASO 2 Conectar el anterior de 40 a 25
+    (aux->sig)->ant = aux->ant;
+    // PASO 3 Eliminar el nodo 25
+    circular->longitud--;
+    free(aux);
 }
