@@ -34,8 +34,10 @@ int main() {
     recorrido(doblementeCircular);
     recorridoInverso(doblementeCircular);
     // recorridoCiclos(doblementeCircular, 3);
+
     printf("\n\nELIMINAR NODO 30\n\n");
     eliminarNodos(&doblementeCircular, 30);
+
     recorrido(doblementeCircular);
     recorridoInverso(doblementeCircular);
 
@@ -129,27 +131,27 @@ void recorridoCiclos(Lista circular, int numCiclos) {
 
 void eliminarNodos(Lista* circular, int nodoEliminar) {
     Nodo* aux = circular->head;
+    // CASO 0 El nodo es el ultimo de la lista
+    if (aux == aux->sig) {
+        circular->head = NULL;
+        circular->tail = NULL;
+    }
 
+    // Buscamos el nodo a eliminar
+    do {
+        aux = aux->sig;
+    } while (aux->dato != nodoEliminar);
+    
     // CASO 1 El nodo a eliminar es la cabeza o cola de la lista
     if (circular->head->dato == nodoEliminar){
         circular->head = aux->sig;
     }
-
     if (circular->tail->dato == nodoEliminar){
-        
+        circular->tail = aux->ant;
     }
-
-    // CASO 2 El nodo a eliminar esta enmedio
-    do {
-        aux = aux->sig;
-        if (aux == circular->head) return;
-    } while (aux->dato != nodoEliminar);
-
-    // PASO 1 Conectar el siguiente de 25 a 40
+    
     (aux->ant)->sig = aux->sig;
-    // PASO 2 Conectar el anterior de 40 a 25
     (aux->sig)->ant = aux->ant;
-    // PASO 3 Eliminar el nodo 25
     circular->longitud--;
     free(aux);
 }
