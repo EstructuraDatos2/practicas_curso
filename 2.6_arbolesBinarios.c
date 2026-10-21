@@ -21,35 +21,34 @@ int main() {
     raiz = insertarNodo(raiz, 15);
     raiz = insertarNodo(raiz, 35);
     raiz = insertarNodo(raiz, 50);
+    raiz = insertarNodo(raiz, 8);
 
     return 0;
 }
 
 Nodo* insertarNodo(Nodo* raiz, int dato) {
-    Nodo* nuevoNodo = (Nodo*)malloc(sizeof(Nodo));
-    nuevoNodo->dato = dato;
-    nuevoNodo->izq = NULL;
-    nuevoNodo->der = NULL;
-    nuevoNodo->esHoja = 1;
-
     // PASO 1 Verificar si el arbol esta vacio
     if (raiz == NULL) {
+        Nodo* nuevoNodo = (Nodo*)malloc(sizeof(Nodo));
+        nuevoNodo->dato = dato;
+        nuevoNodo->izq = NULL;
+        nuevoNodo->der = NULL;
+        nuevoNodo->esHoja = 1;
+        
         return nuevoNodo;
     }
-    
-    // EL DATO ES UN DUPLICADO
-    // if (raiz->dato == dato)
 
     // PASO 2 Verificar si el nuevo valor es menor (Se inserta a la izquierda
     if (dato < raiz->dato) {
-        
+        raiz->izq = insertarNodo(raiz->izq, dato);
     }
     // PASO 3 Verificar si el nuevo valor es mayor (Se inserta a la derecha)
-    else {
-
+    else if(dato > raiz->dato) {
+        raiz->der = insertarNodo(raiz->der, dato);
     }
+    raiz->esHoja = 0;
+      
     // PASO 4 Cuando se llega a una posición vacia se crea el nuevo nodo
-
     // PASO 5 Si el valor ya existe no se inserta un duplicado
-    return NULL;
+    return raiz;
 }
